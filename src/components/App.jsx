@@ -10,6 +10,7 @@ export const App = () => {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [largeImg, setLargeImg] = useState('');
