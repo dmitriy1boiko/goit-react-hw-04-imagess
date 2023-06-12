@@ -10,7 +10,6 @@ export const App = () => {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [largeImg, setLargeImg] = useState('');
@@ -28,7 +27,7 @@ export const App = () => {
         setImages(prevImages => [...prevImages, ...data.hits]);
         setTotalImages(data.totalHits);
       } catch (error) {
-        setError('Sorry, something went wrong...Please, try again');
+        setError(error.massage);
       } finally {
         setIsLoading(false);
       }
@@ -36,7 +35,11 @@ export const App = () => {
     getImagesAPI();
   }, [page, query]);
 
-  const changeQuery = query => setQuery(query);
+  const changeQuery = query => {
+    setQuery(query);
+    setPage(1);
+    setImages([]);
+  };
 
   const changePage = () => {
     setPage(prevPage => prevPage + 1);
@@ -53,15 +56,30 @@ export const App = () => {
   };
 
   return (
-    <div>
-      <Searchbar onSubmit={changeQuery} />
-      {isLoading && <h1>Loading...</h1>}
-      <ImageGallery images={images} openModal={openModal} />
+    <>
+      {error ? (
+        <h2
+          style={{
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            fontSize: '25px',
+            color: 'red',
+          }}
+        >
+          {error}
+        </h2>
+      ) : (
+        <>
+          <Searchbar onSubmit={changeQuery} />
+          {isLoading && <h1>Loading...</h1>}
+          <ImageGallery images={images} openModal={openModal} />
 
-      {showModal && <Modal closeModal={closeModal} largeImg={largeImg} />}
-      {!isLoading && totalImages !== images.length && (
-        <Button onClick={changePage} />
+          {showModal && <Modal closeModal={closeModal} largeImg={largeImg} />}
+          {images.length > 0 && images.length < totalImages ? (
+            <Button onClick={changePage} />
+          ) : null}
+        </>
       )}
-    </div>
+    </>
   );
 };

@@ -7,16 +7,14 @@ const modalRoot = document.querySelector('#modal-root');
 
 export const Modal = ({ closeModal, largeImg }) => {
   useEffect(() => {
+    const closeEsc = e => {
+      if (e.code === 'Escape') {
+        closeModal();
+      }
+    };
     window.addEventListener('keydown', closeEsc);
     return () => window.removeEventListener('keydown', closeEsc);
-    // eslint-disable-next-line
-  }, []);
-
-  const closeEsc = e => {
-    if (e.code === 'Escape') {
-      closeModal();
-    }
-  };
+  }, [closeModal]);
 
   const closeModalClick = e => {
     if (e.currentTarget === e.target) {
@@ -27,7 +25,7 @@ export const Modal = ({ closeModal, largeImg }) => {
   return createPortal(
     <ModalBackdrop onClick={closeModalClick}>
       <ModalContent closeModal={closeModal}>
-        <ModalImg src={largeImg} alt="img" onClick={closeModalClick}></ModalImg>
+        <ModalImg src={largeImg} alt="img"></ModalImg>
       </ModalContent>
     </ModalBackdrop>,
     modalRoot

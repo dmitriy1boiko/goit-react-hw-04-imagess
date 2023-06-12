@@ -10,6 +10,7 @@ export const Searchbar = ({ onSubmit }) => {
   const handleSubmit = e => {
     e.preventDefault();
     onSubmit(input);
+    setInput('');
   };
 
   return (
